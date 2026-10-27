@@ -1,0 +1,7 @@
+{% extends 'layouts/layout.html' %}
+{% block head %}<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Robot decisions · Study</title><link rel="stylesheet" href="{{ server_location }}/static/css/study.css">{% endblock %}
+{% block body %}
+<main><div class="eyebrow">Classroom demonstration</div><h1>Robot decisions</h1><div class="card"><p>Explore the reasoning of two scripted robot characters and share your impressions. Approximately 10–12 minutes; ages 18–80; sound required.</p>
+{% if assignmentid == 'ASSIGNMENT_ID_NOT_AVAILABLE' %}<p>This project is prepared for a classroom demonstration. A live recruitment and compensation notice has not been configured.</p>
+{% else %}<p>Open the study to read the full information and decide whether to participate.</p><script>function openwindow(){window.open('{{ server_location }}/consent?hitId={{ hitid }}&assignmentId={{ assignmentid }}&workerId={{ workerid }}','RobotStudy','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=900');}</script><button class="primary" onclick="openwindow()">Open study</button><p class="subtle">Allow this site's pop-up if your browser blocks the study window.</p>{% endif %}</div></main>
+{% endblock %}

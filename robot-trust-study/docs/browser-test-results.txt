@@ -1,0 +1,9 @@
+PASS complete path 0/0: order, labels, both questionnaires, authority mapping, CSV ID linkage
+PASS complete path 0/1: order, labels, both questionnaires, authority mapping, CSV ID linkage
+PASS complete path 1/0: order, labels, both questionnaires, authority mapping, CSV ID linkage
+PASS complete path 1/1: order, labels, both questionnaires, authority mapping, CSV ID linkage
+PASS all page timeouts, partial ratings/text, null missing values
+PASS consent decline, age boundaries, responsive width
+PASS mocked psiTurk routing, server assignment, reload deadline, failed-save retry and completion gate
+PASS no uncaught JavaScript errors
+PASS installer against official psiTurk 3.3.1 example; Jinja templates render and dependency order preserved

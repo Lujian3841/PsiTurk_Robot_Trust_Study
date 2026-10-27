@@ -1,0 +1,5 @@
+{% extends 'layouts/layout.html' %}
+{% block head %}<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Robot decisions · Welcome</title><link rel="stylesheet" href="/static/css/study.css">{% endblock %}
+{% block body %}
+<main><div class="eyebrow">Classroom study</div><h1>Robot decisions</h1><div class="card"><p>In this study, you will explore two robots’ responses to a hypothetical rescue dilemma, then rate your impressions.</p><p>Plan for about 10–12 minutes. You must be 18–80 years old. Sound is required.</p><p>The next page contains the full consent information. Continuing here does not consent to participation.</p><a class="button primary" href="/exp?hitId={{ hitid|urlencode }}&assignmentId={{ assignmentid|urlencode }}&workerId={{ workerid|urlencode }}">Read the study information</a><p class="subtle">You may close this window if you do not wish to continue.</p></div></main>
+{% endblock %}
