@@ -41,8 +41,10 @@ window.STUDY = {
   },
   // One opening clip and ten answer clips per philosophy. Leave blank for a text placeholder.
   videos: {
-    outcome: {opening:'', reason:'', reason_follow:'', left_behind:'', left_behind_follow:'', promise:'', promise_follow:'', suffering:'', suffering_follow:'', change:'', change_follow:''},
-    care: {opening:'', reason:'', reason_follow:'', left_behind:'', left_behind_follow:'', promise:'', promise_follow:'', suffering:'', suffering_follow:'', change:'', change_follow:''}
+    outcome: {opening:'outcome-opening-final.webm', reason:'outcome-reason-final.webm', reason_follow:'outcome-reason_follow-final.webm', left_behind:'outcome-left_behind-final.webm', left_behind_follow:'outcome-left_behind_follow-final.webm',
+       promise:'outcome-promise-final.webm', promise_follow:'outcome-promise_follow-final.webm', suffering:'outcome-suffering-final.webm', suffering_follow:'outcome-suffering_follow-final.webm', change:'outcome-change-final.webm', change_follow:'outcome-change_follow-final.webm'},
+    care: {opening:'care-opening-final.webm', reason:'care-reason-final.webm', reason_follow:'care-reason_follow-final.webm', left_behind:'care-left_behind-final.webm', left_behind_follow:'care-left_behind_follow-final.webm',
+      promise:'care-promise-final.webm', promise_follow:'care-promise_follow-final.webm', suffering:'care-suffering-final.webm', suffering_follow:'care-suffering_follow-final.webm', change:'care-change-final.webm', change_follow:'care-change_follow-final.webm'}
   },
   ratingItems: [
     ['trust_1','I would trust this robot’s judgment in a difficult decision.'],
