@@ -1,4 +1,4 @@
-// Run from project root with Playwright installed; serve this folder on port 8000.
+// Run from the study folder with Playwright installed. Local files are routed directly.
 const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('fs');
 (async()=>{
 const b=await chromium.launch({executablePath:process.env.STUDY_BROWSER||undefined,headless:true,args:['--no-sandbox','--disable-dev-shm-usage','--disable-gpu','--use-angle=swiftshader']});

@@ -1,4 +1,4 @@
-// Serve the project on port 8000, then run with Playwright installed.
+// Run from the study folder with Playwright installed. No HTTP server is needed.
 const {chromium}=require('playwright');
 const assert=require('node:assert/strict');
 (async()=>{

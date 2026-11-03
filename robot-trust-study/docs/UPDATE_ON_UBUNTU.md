@@ -1,6 +1,6 @@
-# Apply the presentation revisions without rebuilding the study
+# Updating the study on Ubuntu
 
-This update starts from the latest GitHub project, including Zachary's videos. It preserves all audio/video files and all 22 video mappings. Your installed psiTurk project and its database should be backed up before applying an update.
+The GitHub project includes the robot videos and their paths. Back up the installed study and database before copying an updated version into the VM.
 
 After this pull request is merged, run in the Ubuntu VM:
 
@@ -21,6 +21,6 @@ If the clone folder already exists, use `git -C ~/Downloads/robot-study-presenta
 
 The installer copies the repository's interface and media files into the installed project. It does not remove extra media files or replace the database. If you made changes only in the VM after the GitHub upload, compare the backup first: files with the same names are replaced by the repository version.
 
-The age rule is now **18 or older**, with no upper limit. This treats the professor's “over 18” note as adult eligibility including age 18. The consent lists Julian Arceo, Zachary Alexander, and Purdue Northwest. The contact text asks classroom participants to speak to the study team; add a university email to `static/js/content.js` if the professor requires one.
+Participants must be **18 or older**, with no upper age limit. The consent identifies Julian Arceo, Zachary Alexander, and Purdue Northwest. The contact text directs classroom participants to the study team. It can be changed to a university email in `static/js/content.js`.
 
-Before presenting: complete a fresh run, try a wrong understanding answer, go back through setup, check sound in Firefox, and inspect exported question/trial data. The page layouts were checked at 1366×768 browser content pixels and 100% zoom. Use a large VM window; smaller windows retain scrolling rather than hiding content. The prerecorded robot wording is unchanged so you do not need to record new clips. Pilot the added instruction check for the 10–12 minute target.
+Before presenting: complete a fresh run, try a wrong understanding answer, go back through setup, check sound in Firefox, and inspect exported question/trial data. The page layouts were checked at 1366×768 browser content pixels and 100% zoom. Use a large VM window; smaller windows retain scrolling rather than hiding content. The scripts and video paths match the existing recordings. Pilot the added instruction check for the 10–12 minute target.

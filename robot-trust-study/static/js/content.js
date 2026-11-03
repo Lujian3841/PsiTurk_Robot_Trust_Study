@@ -1,10 +1,10 @@
-/* Edit video paths and study details here. Paths are relative to static/media/. */
+/* Study content and video paths, relative to static/media/. */
 window.STUDY = {
   version: '1.1.0',
   researcher: 'Julian Arceo & Zachary Alexander',
   contact: 'Ask Julian Arceo or Zachary Alexander before taking part.',
   course: 'Purdue Northwest',
-  // Keep true until the videos and institution-approved consent details are ready.
+  // Display the classroom study banner.
   demoMode: true,
   timing: {scenario:60, dialogue:150, ratings:60, authority:60, reflection:45},
   scenario: `A flood has trapped people in two buildings. A robot has one boat and time for only one rescue. At Building A, one person waits. The robot promised to come back for them. At Building B, five people wait. Everyone faces the same danger. Both rescues have the same chance of success. No other help can arrive in time. The robot cannot save both groups.`,
@@ -39,7 +39,7 @@ window.STUDY = {
       }
     }
   },
-  // One opening clip and ten answer clips per philosophy. Leave blank for a text placeholder.
+  // Each robot has one opening, five main replies, and five follow-ups.
   videos: {
     outcome: {opening:'outcome-opening-final.webm', reason:'outcome-reason-final.webm', reason_follow:'outcome-reason_follow-final.webm', left_behind:'outcome-left_behind-final.webm', left_behind_follow:'outcome-left_behind_follow-final.webm',
        promise:'outcome-promise-final.webm', promise_follow:'outcome-promise_follow-final.webm', suffering:'outcome-suffering-final.webm', suffering_follow:'outcome-suffering_follow-final.webm', change:'outcome-change-final.webm', change_follow:'outcome-change_follow-final.webm'},

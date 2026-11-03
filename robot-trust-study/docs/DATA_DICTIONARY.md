@@ -4,7 +4,7 @@
 
 The app uses the same psiTurk object, initialized with the server's `uniqueId`, for trial and questionnaire recording. Native exports include psiTurk's identifier columns; `participant_id` is also explicit in every trial object and as a question-data field. Preview IDs begin `preview-` and must never be treated as research participants.
 
-The preview downloads use a wide event table and a long question table (`participant_id,key,value`). Native psiTurk CSVs may store a trial object's JSON in an outer column or expose its fields, depending on version. Inspect the headers before analysis. Do not rename or reorder native identifier columns blindly. Data is committed to psiTurk's database first; `download_datafiles` produces CSVs afterward.
+The preview downloads use a wide event table and a long question table (`participant_id,key,value`). Native psiTurk CSVs may store a trial object's JSON in an outer column or expose its fields, depending on version. The identifier columns in the native export link records across files. Data is committed to psiTurk's database first; `download_datafiles` produces CSVs afterward.
 
 ## trialdata.csv: experiment events
 
