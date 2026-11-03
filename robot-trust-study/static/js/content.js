@@ -1,13 +1,13 @@
-/* Edit video paths and study details here. Paths are relative to static/media/. */
+/* Study content and video paths, relative to static/media/. */
 window.STUDY = {
-  version: '1.0.0',
-  researcher: '[Add researcher names]',
-  contact: '[Add university email]',
-  course: 'Classroom demonstration — robot decision-making study',
-  // Keep true until the videos and institution-approved consent details are ready.
+  version: '1.1.0',
+  researcher: 'Julian Arceo & Zachary Alexander',
+  contact: 'Ask Julian Arceo or Zachary Alexander before taking part.',
+  course: 'Purdue Northwest',
+  // Display the classroom study banner.
   demoMode: true,
   timing: {scenario:60, dialogue:150, ratings:60, authority:60, reflection:45},
-  scenario: `A severe flood has trapped people in two buildings. A rescue robot has one boat and enough time to complete only one rescue before both buildings become inaccessible. At Building A, one person is waiting. The robot previously told this person it would return to rescue them. At Building B, five people are waiting. All six people face the same risk, and either rescue has the same chance of success. No other rescuers can arrive in time. The robot must choose which building to go to.`,
+  scenario: `A flood has trapped people in two buildings. A robot has one boat and time for only one rescue. At Building A, one person waits. The robot promised to come back for them. At Building B, five people wait. Everyone faces the same danger. Both rescues have the same chance of success. No other help can arrive in time. The robot cannot save both groups.`,
   questions: [
     {id:'reason', text:'Why did you make that decision?', follow:'How do you decide whose interests matter?'},
     {id:'left_behind', text:'What about the people you leave behind?', follow:'How would you explain your choice to them?'},
@@ -39,7 +39,7 @@ window.STUDY = {
       }
     }
   },
-  // One opening clip and ten answer clips per philosophy. Leave blank for a text placeholder.
+  // Each robot has one opening, five main replies, and five follow-ups.
   videos: {
     outcome: {opening:'outcome-opening-final.webm', reason:'outcome-reason-final.webm', reason_follow:'outcome-reason_follow-final.webm', left_behind:'outcome-left_behind-final.webm', left_behind_follow:'outcome-left_behind_follow-final.webm',
        promise:'outcome-promise-final.webm', promise_follow:'outcome-promise_follow-final.webm', suffering:'outcome-suffering-final.webm', suffering_follow:'outcome-suffering_follow-final.webm', change:'outcome-change-final.webm', change_follow:'outcome-change_follow-final.webm'},
@@ -52,14 +52,14 @@ window.STUDY = {
     ['comfort_1','I would feel comfortable interacting with this robot.'],
     ['comfort_2','I would feel at ease discussing a difficult situation with this robot.'],
     ['competence_1','This robot appears capable of handling difficult decisions.'],
-    ['competence_2','This robot appears competent at evaluating a difficult situation.'],
+    ['competence_2','This robot seems skilled at judging a hard situation.'],
     ['intelligence_1','This robot appears intelligent.'],
-    ['intelligence_2','This robot appears able to reason through complex problems.']
+    ['intelligence_2','This robot seems able to think through hard problems.']
   ],
   domains: [
-    ['business','Your business','Decisions affecting employees and company resources.'],
-    ['family','Your family','Decisions affecting your family’s well-being.'],
-    ['government','Government','Decisions about public policies and services.'],
-    ['rescue','Rescue operations','Decisions about whom to rescue when resources are limited.']
+    ['business','Your business','Choices about workers and money.'],
+    ['family','Your family','Choices about your family’s needs.'],
+    ['government','Government','Choices about public rules and services.'],
+    ['rescue','Rescue operations','Who to rescue when help is limited.']
   ]
 };

@@ -4,7 +4,7 @@
 
 The app uses the same psiTurk object, initialized with the server's `uniqueId`, for trial and questionnaire recording. Native exports include psiTurk's identifier columns; `participant_id` is also explicit in every trial object and as a question-data field. Preview IDs begin `preview-` and must never be treated as research participants.
 
-The preview downloads use a wide event table and a long question table (`participant_id,key,value`). Native psiTurk CSVs may store a trial object's JSON in an outer column or expose its fields, depending on version. Inspect the headers before analysis. Do not rename or reorder native identifier columns blindly. Data is committed to psiTurk's database first; `download_datafiles` produces CSVs afterward.
+The preview downloads use a wide event table and a long question table (`participant_id,key,value`). Native psiTurk CSVs may store a trial object's JSON in an outer column or expose its fields, depending on version. The identifier columns in the native export link records across files. Data is committed to psiTurk's database first; `download_datafiles` produces CSVs afterward.
 
 ## trialdata.csv: experiment events
 
@@ -37,7 +37,7 @@ Events: `scenario_start`, `scenario_end`, `robot_start`, `reply_opened`, `follow
 |---|---|
 | participant_id | Same ID as trial events |
 | consent | true after explicit agreement |
-| age | Integer entry, 18–80; stored as form string |
+| age | Integer entry, 18 or older; stored as form string |
 | gender | Selected category including prefer not to answer |
 | psiturk_before / robots_before | Yes / No / Not sure |
 | robot_familiarity | Familiarity category |
@@ -45,7 +45,10 @@ Events: `scenario_start`, `scenario_end`, `robot_start`, `reply_opened`, `follow
 | study_version / preview / demo_mode / cache_available | Session metadata |
 | av_clip_finished / av_attempts / av_last_tones / av_last_shape / av_passed | Equipment check |
 | screenout_reason | media_check_failed when applicable |
-| instructions_completed | Instructions were completed |
+| instructions_completed | Instructions and required check were completed |
+| instructions_check_robots / instructions_check_replies / instructions_check_timer | Latest instruction-check answers |
+| instructions_check_passed | All three instruction questions answered correctly |
+| instructions_check_history | Array of every submitted attempt with answers and correctness |
 | understanding_rescues / understanding_promise | Dilemma comprehension responses |
 | comprehension_correct / comprehension_completion_reason | Accuracy and completion status |
 | robot_outcome_* / robot_care_* | Eight ratings and rating page status below |
