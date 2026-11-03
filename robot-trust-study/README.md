@@ -37,10 +37,10 @@ python /path/to/robot-trust-study/install_into_psiturk.py /path/to/psiturk-examp
 ```ini
 num_conds = 2
 num_counters = 2
-experiment_code_version = robot-trust-1.0.0
+experiment_code_version = robot-trust-1.1.0
 ```
 
-4. In that project directory, run `psiturk`; in its shell run `server on`, then `debug`.
+4. In that project directory with your virtual environment active, run `psiturk server on`, then `psiturk debug -p`. Open the printed URL in the VM browser.
 5. The installer also replaces the sample advertisement and consent wrapper with study-specific introduction pages. Full consent remains inside the task before study responses are recorded. Original templates are backed up.
 6. Complete fresh debug sessions repeatedly. Verify server-assigned `condition` and `counterbalance` values in exports; no strict alternation is promised by psiTurk's balanced random assignment.
 7. In the psiTurk shell run `download_datafiles`. Inspect `trialdata.csv` and `questiondata.csv`. An additional platform-generated `eventdata.csv` is normal.
@@ -85,13 +85,13 @@ Aim for roughly 15–20 seconds per main reply and opening, and 10–15 seconds 
 
 The included sound/video check is a real six-second MP4 with three tones and a circle. The instruction page contains a screenshot of the actual dialogue interface, satisfying the screenshot option in the assignment. Replace this screenshot if you substantially change the interface.
 
-Fill `researcher` and `contact` in `content.js`. `demoMode: true` displays a classroom-demo banner. Set it to false only when the final videos and consent details are ready. This setting does not disable psiTurk saving. This deliverable is for a classroom demonstration; consent is a draft for instructor review, not an institutional approval claim.
+The research team and school are filled in. `contact` currently directs classroom participants to ask Julian or Zachary; replace it with your university email if required by your professor. `demoMode: true` displays a classroom-demo banner. Set it to false only when the final videos and consent details are ready. This setting does not disable psiTurk saving. This deliverable is for a classroom demonstration; consent is a draft for instructor review, not an institutional approval claim.
 
 ## 4. Timing and automatic progression
 
 | Page | Time limit |
 |---|---:|
-| Consent, demographics, equipment check, instructions | Untimed; typically 1.5–2 minutes combined |
+| Consent, demographics, equipment check, instructions and instruction check | Untimed; typically 1.5–2 minutes combined |
 | Scenario and understanding questions | 60 seconds |
 | First robot dialogue | 150 seconds |
 | First robot ratings | 60 seconds |
@@ -103,7 +103,7 @@ Fill `researcher` and `contact` in `content.js`. `demoMode: true` displays a cla
 
 Target: around 10–12 minutes including setup at an ordinary pace. This is a design estimate, not a measured completion-time guarantee. Early completion is required by the assignment, so a fast participant may finish below ten minutes. Consent is never granted by timeout. Demographic validity and the media check cannot be skipped by waiting.
 
-Every experimental page displays a countdown. Dialogue automatically advances once all five main answers are marked reviewed. Survey “Save/Continue” buttons submit the completed page and immediately advance without an extra transition screen. Timeouts save partial answers and advance without validation. Missing answers are null, not neutral ratings or zero scores. No back button is provided. Absolute deadlines continue in background tabs. psiTurk-mode reloads resume the same page/deadline from this tab's session storage when available; preview reloads intentionally start a fresh session.
+Every experimental page displays a countdown. Dialogue automatically advances once all five main answers are marked reviewed. Survey “Save/Continue” buttons submit the completed page and immediately advance without an extra transition screen. Timeouts save partial answers and advance without validation. Missing answers are null, not neutral ratings or zero scores. Previous buttons are available during setup only. Answers are restored when revisiting setup pages. Timed experimental pages do not have a Previous button. Absolute deadlines continue in background tabs. psiTurk-mode reloads resume the same page/deadline from this tab's session storage when available; preview reloads intentionally start a fresh session.
 
 ## 5. Where data goes
 
@@ -116,7 +116,7 @@ Every experimental page displays a countdown. Dialogue automatically advances on
 
 ## 6. Demo checklist for Dr. Roy
 
-- Agree and decline paths; ages outside 18–80 blocked.
+- Agree and decline paths; ages below 18 blocked; ages above 80 accepted.
 - Required background questions saved in question data.
 - Incorrect sound/video answers cannot pass; correct answers after playback pass.
 - Screenshot displayed on instructions; correct first/second robot named.

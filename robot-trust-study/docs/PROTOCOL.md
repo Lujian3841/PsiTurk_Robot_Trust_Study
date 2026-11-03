@@ -19,11 +19,11 @@ The two moral approaches are the within-subject conditions. The four rows are al
 
 ## Participants and procedure
 
-Adults aged 18–80. Voluntary consent; required age and demographic fields before the task. Gender includes a nonresponse option. No names, email addresses, video recordings, or voice recordings are requested. A coded psiTurk ID links records, and platform-level metadata may exist, so avoid claiming the system is completely anonymous.
+Adults aged 18 or older. Voluntary consent; required age and demographic fields before the task. Gender includes a nonresponse option. No names, email addresses, video recordings, or voice recordings are requested. A coded psiTurk ID links records, and platform-level metadata may exist, so avoid claiming the system is completely anonymous.
 
-Sequence: consent → demographics → audio/video check → condition-specific instructions and screenshot → dilemma plus comprehension questions → first robot dialogue → first robot ratings → second robot dialogue → second robot ratings → authority preferences → optional open-ended response → debrief.
+Sequence: consent → demographics → audio/video check → condition-specific instructions and screenshot → required instruction check → dilemma plus comprehension questions → first robot dialogue → first robot ratings → second robot dialogue → second robot ratings → authority preferences → optional open-ended response → debrief.
 
-The comprehension questions are recorded without feedback and do not block task entry after timeout. Include their correctness as a data-quality flag, rather than changing the moral scenario or silently excluding participants. The equipment check must pass; inability to hear or see the check ends the task before exposure. No experimental timeout bypasses consent or eligibility.
+The three new instruction-check questions require correct answers before task entry, offer feedback and retry, and save every attempt in question data. The two timed scenario comprehension questions are recorded without feedback and do not block task entry after timeout. Include their correctness as a data-quality flag, rather than changing the moral scenario or silently excluding participants. The equipment check must pass; inability to hear or see the check ends the task before exposure. No experimental timeout bypasses consent or eligibility.
 
 ## Stimulus control
 
