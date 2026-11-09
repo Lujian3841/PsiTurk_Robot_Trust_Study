@@ -677,4 +677,296 @@ textarea {
     .rating-grid {
         row-gap: 8px;
     }
+
+/* =========================================
+   RESPONSIVE, VIEWPORT-FILLING LAYOUT
+   ========================================= */
+
+/* Make the experiment fill the screen height */
+#app {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Use nearly all available screen width and height */
+#app main {
+    width: 100%;
+    max-width: none;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    margin: 0 auto;
+
+    padding:
+        clamp(12px, 2vh, 28px)
+        clamp(16px, 3vw, 56px)
+        clamp(16px, 2vh, 24px);
+}
+
+/* Allow main content cards to grow with the screen */
+#app main > .card {
+    flex: 1;
+    width: 100%;
+
+    padding: clamp(16px, 2vw, 32px);
+    margin: clamp(10px, 1.5vh, 20px) 0;
+}
+
+/* Center forms vertically when there is extra room */
+#app main > form.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Keep the footer near the bottom */
+#app main .footer {
+    margin-top: auto;
+    padding-top: 12px;
+}
+
+/* =========================================
+   ROBOT DIALOGUE LAYOUT
+   ========================================= */
+
+#app main > .dialogue-grid {
+    grid-template-columns:
+        minmax(0, 1.2fr)
+        minmax(0, 1fr);
+
+    gap: clamp(12px, 2vw, 32px);
+    align-items: start;
+}
+
+/* Videos resize with the available screen space */
+#app main .video-panel video {
+    width: 100%;
+    height: auto;
+    max-height: min(42dvh, 520px);
+    object-fit: contain;
+}
+
+/* Keep instruction images proportional */
+#app main figure img {
+    width: 100%;
+    max-height: min(45dvh, 440px);
+    object-fit: contain;
+}
+
+/* =========================================
+   TABLET LAYOUT
+   ========================================= */
+
+@media (max-width: 900px) {
+
+    /* Stack dialogue sections when space is limited */
+    #app main > .dialogue-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #app main .video-panel video {
+        max-height: min(38dvh, 380px);
+    }
+}
+
+/* =========================================
+   PHONE LAYOUT
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    #app main {
+        padding: 12px;
+    }
+
+    #app main > .card {
+        padding: 16px;
+        margin: 8px 0;
+    }
+
+    #app main .video-panel video {
+        max-height: 34dvh;
+    }
+
+    #app main .questions {
+        gap: 8px;
+    }
+
+    #app main .questions button {
+        width: 100%;
+    }
+
+    html,
+body {
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+}
+
+#app {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
+#app main {
+    flex: 1;
+    width: 100%;
+    max-width: none;
+    min-height: 0;
+    margin: 0 auto;
+
+    padding: clamp(8px, 1.5vh, 20px)
+             clamp(12px, 2vw, 32px);
+
+    display: flex;
+    flex-direction: column;
+}
+
+#app main > .card {
+    flex: 1;
+    min-height: 0;
+    margin: 8px 0;
+    padding: clamp(12px, 1.5vw, 24px);
+}
+
+#app main .footer {
+    margin-top: auto;
+}
+
+/* Reduce wasted space on short screens */
+@media (max-height: 800px) {
+    #app h1 {
+        font-size: clamp(20px, 3vh, 28px);
+        margin: 4px 0 8px;
+    }
+
+    #app p {
+        margin: 5px 0;
+    }
+
+    #app .actions {
+        margin-top: 8px;
+    }
+
+    #app .dialogue-grid .video-panel video {
+        max-height: min(28dvh, 260px);
+    }
+
+    #app .rating-grid {
+        gap: 6px 16px;
+    }
+
+
+    /* =========================================
+    COMPACT ROBOT DIALOGUE PAGES
+    ========================================= */
+
+    /* Reduce empty space above and below content */
+    #app main:has(.dialogue-grid) {
+        padding-top: 6px;
+        padding-bottom: 6px;
+    }
+
+    /* Reduce heading spacing */
+    #app main:has(.dialogue-grid) h1 {
+        margin: 4px 0 6px;
+    }
+
+    /* Slightly reduce card padding */
+    #app main:has(.dialogue-grid) .card {
+        padding: clamp(10px, 1.2vw, 16px);
+        margin: 6px 0;
+    }
+
+    /* Slightly reduce video height */
+    #app main .dialogue-grid .video-panel video {
+        max-height: min(36dvh, 280px);
+    }
+
+    /* Reduce space around robot responses */
+    #app main .dialogue-grid .response {
+        margin: 6px 0;
+    }
+
+    /* Move footer closer to the content */
+    #app main:has(.dialogue-grid) .footer {
+        margin-top: 4px;
+        padding-top: 0;
+    }
+
+    /* =========================================
+    FULL-WIDTH ROBOT DIALOGUE TRANSCRIPT
+    ========================================= */
+
+    /* Full-width robot transcript layout */
+
+    #app main .dialogue-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+}
+
+#app main .dialogue-transcript {
+    grid-column: 1 / -1;
+    width: 100%;
+    max-width: none;
+}
+
+@media (max-width: 750px) {
+    #app main .dialogue-grid {
+        grid-template-columns: 1fr;
+    }
+
+@media (max-width: 750px) {
+    #app main .dialogue-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+    /* =========================================
+    ROBOT DIALOGUE TITLE ROW
+    ========================================= */
+
+    .dialogue-title-row {
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+        column-gap: 18px;
+        row-gap: 4px;
+        width: 100%;
+        margin: 4px 0 8px;
+    }
+
+    /* Main robot title */
+    .dialogue-title-row h1 {
+        margin: 0;
+        flex-shrink: 0;
+    }
+
+    /* Scenario description beside the title */
+    .dialogue-title-row .subtle {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.3;
+        font-weight: 400;
+    }
+
+        #app main .dialogue-transcript .actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 6px;
+    }
+
+    #app main .dialogue-transcript #follow-area {
+        margin: 0;
+    }
+}
+}
+}
 }
