@@ -42,7 +42,7 @@ for f in (source/'templates').glob('*.html'):
 if not cfg.with_suffix('.txt.original').exists():shutil.copy2(cfg,cfg.with_suffix('.txt.original'))
 config=configparser.ConfigParser(interpolation=None);config.read(cfg)
 if not config.has_section('Task Parameters'):config.add_section('Task Parameters')
-for k,v in {'num_conds':'2','num_counters':'2','experiment_code_version':'robot-trust-1.1.0'}.items():config.set('Task Parameters',k,v)
+for k,v in {'num_conds':'2','num_counters':'2','experiment_code_version':'robot-trust-experiment-1.2.0'}.items():config.set('Task Parameters',k,v)
 with cfg.open('w') as f:config.write(f)
 print('Installed. Original exp.html and config.txt are backed up alongside them.')
 print('Study introduction templates installed. Run psiTurk server on and debug.')

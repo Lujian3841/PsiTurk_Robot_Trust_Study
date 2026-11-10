@@ -1,11 +1,11 @@
 /* Study content and video paths, relative to static/media/. */
 window.STUDY = {
-  version: '1.1.0',
+  version: '1.2.0',
   researcher: 'Julian Arceo & Zachary Alexander',
   contact: 'Ask Julian Arceo or Zachary Alexander before taking part.',
   course: 'Purdue Northwest',
   // Display the classroom study banner.
-  demoMode: true,
+  demoMode: false,
   timing: {scenario:60, dialogue:150, ratings:60, authority:60, reflection:45},
   scenario: `A flood has trapped people in two buildings. A robot has one boat and time for only one rescue. At Building A, one person waits. The robot promised to come back for them. At Building B, five people wait. Everyone faces the same danger. Both rescues have the same chance of success. No other help can arrive in time. The robot cannot save both groups.`,
   questions: [

@@ -9,16 +9,16 @@ Everyone meets both robots. Participants choose questions to learn each robot's 
 
 ## Running the study
 
-The study runs in psiTurk on our Ubuntu VM. To start the installed version:
+For a fresh installation, follow [RUN_EXPERIMENT.md](docs/RUN_EXPERIMENT.md). After installation, start the study in the Ubuntu VM:
 
 ```bash
 source ~/psiturk-work/.venv/bin/activate
-cd ~/robot-study-project/Robot_Study_Revised
+cd ~/robot-study-project/Robot_Study_Experiment
 psiturk server on
 psiturk debug -p
 ```
 
-Open the printed debug link in Firefox inside the VM. [Updating the Ubuntu project](docs/UPDATE_ON_UBUNTU.md) covers installation and backups.
+Open the printed debug link in Firefox inside the VM. [Experiment installation and collection](docs/RUN_EXPERIMENT.md) covers the separate project, pilot sessions, and exports.
 
 For a preview without psiTurk, run this from the `robot-trust-study` folder:
 

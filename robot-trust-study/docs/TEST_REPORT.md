@@ -1,5 +1,17 @@
 # Test report
 
+## Experiment copy 1.2.0 — November 10, 2026
+
+The separate experiment copy was checked against psiTurk 3.3.1 using Python 3.10 and a temporary SQLite database. The native integration test passed fresh installation, refusal to overwrite an existing folder, byte-for-byte media copying, consent and experiment template rendering, assignment of all four combinations across four fresh sessions, saving and loading through `/sync`, session completion, native CSV export with matching participant IDs, and SQLite backup. This used Flask's test client, not a deployed public server.
+
+The browser suite also passed all four complete paths, timeouts and partial responses, age validation, and mocked psiTurk save/retry/completion checks with Chromium 134. No study dialogue, videos, or rating items were changed in this copy.
+
+Run `python tests/native-check.py` in a working psiTurk environment to repeat the native test. It creates its own temporary project and never uses the collection database. The test environment used cryptography 38.0.4 and setuptools 80.10.2 for compatibility with psiTurk 3.3.1's older dependencies; the user's existing working environment should be reused.
+
+**Still required on the Ubuntu VM:** a complete Firefox pilot covering audible sound, full video playback, page layout, timing, the saved confirmation, and an export. The automated browser media check simulates the video's ended event. These tests do not certify audio playback or the 10–12 minute duration on the VM.
+
+The following report records earlier presentation checks; it is historical, not a new layout certification.
+
 ## Version 1.1.0 — November 3, 2026
 
 Browser checks used Playwright with Chromium 134 in headless mode. Tests loaded repository files through request routing. The results below cover the presentation revisions, including the existing robot videos.
@@ -35,7 +47,7 @@ Set `STUDY_BROWSER` to an installed Chromium executable if needed. No HTTP serve
 
 The main test output is in `browser-test-results.txt`.
 
-## Remaining VM checks
+## Remaining VM checks at version 1.1.0
 
 The browser tests use a mocked psiTurk connection. They do not verify the live server, its assignment service, database persistence, or exported CSV files.
 
