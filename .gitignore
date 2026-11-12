@@ -1,0 +1,11 @@
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+exports/
+trialdata.csv
+questiondata.csv
+eventdata.csv
+server.log
+__pycache__/
+.venv/

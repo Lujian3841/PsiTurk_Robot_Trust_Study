@@ -17,13 +17,13 @@ This is a within-subject study: each participant meets both robots. Both face th
 | 1 | 0 | B: promise | A: outcome |
 | 1 | 1 | A: promise | B: outcome |
 
-The code uses `outcome` and `care` as internal names. Participants only see A and B. The four rows change order and labels, not the scenario. psiTurk assigns these values, and the same combination can appear in consecutive sessions.
+The code uses `outcome` and `care` as internal names. Participants only see A and B. The four rows change order and labels, not the scenario. psiTurk assigns these values using balanced random assignment, and the same combination can appear in consecutive sessions.
 
 ## Participants and procedure
 
 Participants must be 18 or older and agree to take part. Background questions cover age, gender, previous psiTurk use, previous work with robots, and familiarity with humanoid robots.
 
-The sequence is consent, background questions, equipment check, instructions, instruction check, scenario, first robot and ratings, second robot and ratings, authority choices, final comment, and closing explanation.
+The sequence is consent, background questions, equipment check, instructions, instruction check, scenario, first robot and ratings, second robot and ratings, MDMT moral-trust questions for both robots, authority choices, final comment, and closing explanation.
 
 The three instruction questions require correct answers and allow retries with feedback. Every submitted attempt is saved in question data. The two scenario questions record understanding of the rescue problem. They are timed, and unanswered or incorrect responses are retained for analysis.
 
@@ -33,7 +33,7 @@ Participation is voluntary. Participants can stop at any time. The study request
 
 ## Robot presentation
 
-The robot replies are prerecorded, with matching transcripts. Participants choose five main questions and can select optional follow-ups. Both characters use the same question menu. Visual appearance, voice, pacing, framing, and sound level should be kept consistent so they do not introduce additional differences.
+The robot replies are prerecorded, with matching transcripts. Videos attempt autoplay with sound, and participants must finish each selected clip before moving on. If the browser blocks autoplay, participants press Play. Robot dialogue and all rating, MDMT, authority, and reflection pages are untimed. Only the story page has a one-minute limit. Plan for 15–20 minutes and verify the duration in a pilot; untimed answers and optional follow-ups can extend it. Participants choose five main questions and can select optional follow-ups. Both characters use the same question menu. Visual appearance, voice, pacing, framing, and sound level should be kept consistent so they do not introduce additional differences.
 
 The promise-focused robot does not minimize all harm: its choice leaves five people without rescue. The comparison is between saving more lives and keeping a specific promise. Neither is described to participants as the correct moral answer.
 
@@ -41,7 +41,9 @@ The decision and explanation differ together. This design cannot tell us whether
 
 ## Measures
 
-Each robot receives eight ratings on a 1–7 scale: two each for trust, comfort, competence, and intelligence. These are study-specific questions, not a validated questionnaire. The scale runs from strongly disagree to strongly agree, with a separate option not to answer.
+Each robot receives six ratings on a 1–7 scale: two each for comfort, competence, and intelligence. These are study-specific questions, not a validated questionnaire. The scale runs from strongly disagree to strongly agree, with a separate option not to answer.
+
+At the end, moral trust is measured separately with the 12-item MDMT v2 Moral Trust subset for each robot. See [MDMT.md](MDMT.md) for administration, scoring, and attribution.
 
 Participants choose Robot A, Robot B, no preference, neither robot, or prefer not to answer for four areas: business, family, government, and rescue. Each choice assumes that a human can override the robot. Both the displayed label and its matching robot type are saved.
 

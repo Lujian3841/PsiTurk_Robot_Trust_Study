@@ -83,7 +83,7 @@
     }
 
     const robots = plan(condition, counterbalance);
-    const storageKey = 'robot-study:' + id;
+    const storageKey = 'robot-study:' + C.version + ':' + id;
 
     let state = {
         id,
@@ -485,51 +485,24 @@
         return '<button type="button" id="previous">Previous</button>';
     }
 
-    function bindSurvey(prefix, onDone, seconds) {
+    function bindSurvey(prefix, onDone) {
         const form = document.querySelector('form');
-
         restore(form, prefix);
         gate(form);
 
         const persist = () => {
-            Object.entries(values(form)).forEach(
-                ([k, v]) => q(prefix + k, v)
-            );
+            Object.entries(values(form)).forEach(([key, value]) => q(prefix + key, value));
         };
-
         form.addEventListener('input', persist);
         form.addEventListener('change', persist);
-
-        form.onsubmit = e => {
-            e.preventDefault();
-
+        form.onsubmit = event => {
+            event.preventDefault();
             if (!form.reportValidity()) return;
-
-            if (seconds) {
-                pageExit('completed');
-            } else {
-                persist();
-                onDone('completed');
-            }
+            persist();
+            q((prefix || state.step + '_') + 'completion_reason', 'completed');
+            q(state.step + '_duration_ms', Date.now() - state.pageStarted);
+            onDone('completed');
         };
-
-        if (seconds) {
-            timed(seconds, reason => {
-                persist();
-
-                q(
-                    (prefix || state.step + '_') + 'completion_reason',
-                    reason
-                );
-
-                q(
-                    (prefix || state.step + '_') + 'duration_ms',
-                    Date.now() - state.pageStarted
-                );
-
-                onDone(reason);
-            });
-        }
     }
 
     function consent() {
@@ -554,15 +527,13 @@
 
                         <p>
                             <strong>Time and age:</strong>
-                            About 10–12 minutes. You must be 18 or older.
+                            Allow about 15–20 minutes; take the time you need. You must be 18 or older.
                         </p>
 
                         <p>
-                            <strong>Risks and benefits:</strong>
-                            The story involves a flood and people who may die.
-                            This may feel upsetting. There are no graphic images.
-                            You may not benefit directly. Your answers may help
-                            us learn how people judge robots.
+                            <strong>About the story:</strong>
+                            The rescue problem involves deciding who to save in a flood.
+                            Your answers help us study how people judge robots.
                         </p>
                     </section>
 
@@ -570,7 +541,7 @@
                         <p>
                             <strong>Your data:</strong>
                             We collect non-identifiable answers, choices, and
-                            response times. A coded psiTurk ID links your answers.
+                            response times.
                             We do not ask for your name or record your face or
                             voice. Do not type personal details.
                         </p>
@@ -578,8 +549,8 @@
                         <p>
                             <strong>Your choice:</strong>
                             Taking part is your choice. You can stop at any time.
-                            Answers already saved may be kept. You may skip
-                            ratings or the final comment.
+                            Answers already saved may be kept. You may leave
+                            the final comment blank.
                         </p>
 
                         <p>
@@ -675,7 +646,9 @@
                             min="18"
                             step="1"
                             required
+                            aria-describedby="age-error"
                         >
+                        <p id="age-error" class="error hidden" role="alert">Not 18 yet — you must be 18 or older to take part.</p>
                     </div>
 
                     <div>
@@ -733,6 +706,55 @@
 
         bindSurvey('', () => next('media'));
         previous('consent');
+        const age = document.getElementById('age');
+        const checkAge = () => {
+            const underage = age.value !== '' && Number(age.value) < 18;
+            document.getElementById('age-error').classList.toggle('hidden', !underage);
+            age.setAttribute('aria-invalid', String(underage));
+        };
+        age.addEventListener('input', checkAge);
+        checkAge();
+    }
+
+    function playWholeVideo(video, ready, status, onFinished, onEvent = () => {}) {
+        let finished = false, furthest = 0;
+        ready(false);
+        video.autoplay = true;
+        video.controls = true;
+        video.playsInline = true;
+        video.addEventListener('timeupdate', () => {
+            if (!video.seeking && video.currentTime <= furthest + 1.5) {
+                furthest = Math.max(furthest, video.currentTime);
+            }
+        });
+        video.addEventListener('seeking', () => {
+            if (!finished && video.currentTime > furthest + 0.5) video.currentTime = furthest;
+        });
+        video.addEventListener('ratechange', () => {
+            if (video.playbackRate !== 1) video.playbackRate = 1;
+        });
+        video.addEventListener('play', () => {
+            status.textContent = 'Watch the full video. Then confirm you understood the response.';
+            onEvent('video_play');
+        });
+        video.addEventListener('ended', () => {
+            if (finished || !video.ended || !Number.isFinite(video.duration) || furthest < video.duration - 1) return;
+            finished = true;
+            status.textContent = 'Video finished. You can continue.';
+            onEvent('video_ended');
+            onFinished();
+            ready(true);
+        });
+        video.addEventListener('error', () => {
+            ready(false);
+            status.textContent = 'Video could not load. Tell the study team or reload to try again.';
+            status.classList.add('error');
+            onEvent('video_error');
+        });
+        video.play().catch(() => {
+            if (!video.isConnected || finished) return;
+            status.textContent = 'Autoplay was blocked. Press Play on the video to start with sound.';
+        });
     }
 
     function media() {
@@ -740,7 +762,7 @@
 
         shell('Check your sound and video', `
             <div class="card">
-                <p>Play the whole clip. Then answer both questions.</p>
+                <p>Watch the whole clip with sound. Then answer both questions.</p>
 
                 <video
                     id="check-video"
@@ -749,6 +771,7 @@
                     preload="auto"
                     src="${base}av-check.mp4"
                 ></video>
+                <p id="playback-status" class="subtle" aria-live="polite"></p>
 
                 <form>
                     <div class="form-grid">
@@ -790,7 +813,7 @@
             </div>
         `, 'Equipment check', 15);
 
-        let played = state.questions.av_clip_finished === true;
+        let played = false;
 
         const form = document.querySelector('form');
 
@@ -805,11 +828,10 @@
             q('av_last_shape', v.shape);
         };
 
-        document.getElementById('check-video').onended = () => {
-            played = true;
-            q('av_clip_finished', true);
+        playWholeVideo(document.getElementById('check-video'), done => {
+            played = done;
             update();
-        };
+        }, document.getElementById('playback-status'), () => q('av_clip_finished', true));
 
         form.onsubmit = e => {
             e.preventDefault();
@@ -858,7 +880,7 @@
                 <ol>
                     <li>Read the rescue story.</li>
                     <li>
-                        Watch or read each robot’s decision.
+                        Watch each robot’s full video.
                         Choose questions to learn why it made that choice.
                     </li>
                     <li>
@@ -873,8 +895,9 @@
                 </p>
 
                 <p>
-                    Timed pages move on when you finish or when time runs out.
-                    The timer keeps running if you switch tabs or reload.
+                    The story page has a one-minute timer. Robot conversations
+                    and questionnaires have no time limit. Finish each video
+                    before confirming you understood it or choosing another question.
                 </p>
 
                 <div class="actions">
@@ -901,11 +924,11 @@
             <div class="card instruction-grid">
                 <section>
                     <ol>
-                        <li>Review the robot’s first answer.</li>
+                        <li>Watch the robot’s first video to the end.</li>
                         <li>Choose any of the five main questions.</li>
                         <li>
-                            Watch or read the reply. Click
-                            “I have reviewed this response.”
+                            Watch the full reply. Click
+                            “I understand what the robot said.”
                         </li>
                         <li>
                             Repeat for all five questions.
@@ -918,6 +941,8 @@
                         You will do this for both robots.
                     </p>
 
+                    <p class="subtle">Look for this highlighted button after each video:</p>
+                    <div class="review-highlight example-review">I understand what the robot said</div>
                     <div class="actions">
                         ${backButton()}
 
@@ -930,7 +955,7 @@
                 <figure>
                     <img
                         src="${base}task-example.png"
-                        alt="Example task: video and reply on the left, question buttons on the right, and a timer above."
+                        alt="Example task: video, question menu, full-width reply, and highlighted confirmation button."
                     >
 
                     <figcaption>
@@ -970,11 +995,11 @@
                 )}
 
                 ${select(
-                    'timer',
-                    'What happens when the timer runs out?',
+                    'video',
+                    'When can you move on from a robot video?',
                     [
-                        'The next page opens and saves my answers',
-                        'The whole study starts over'
+                        'After the whole video finishes',
+                        'Before the video finishes'
                     ]
                 )}
 
@@ -1021,7 +1046,7 @@
             const ok =
                 v.robots === 'Both robots' &&
                 v.replies === 'With recorded answers' &&
-                v.timer === 'The next page opens and saves my answers';
+                v.video === 'After the whole video finishes';
 
             const attempts =
                 state.questions.instructions_check_history || [];
@@ -1035,7 +1060,7 @@
 
             if (!ok) {
                 document.getElementById('understanding-error').textContent =
-                    'Review the instructions and try again: you meet both robots, their replies are recorded, and the timer saves your answers and moves on.';
+                    'Review the instructions and try again: you meet both robots, their replies are recorded, and you must finish each video before moving on.';
                 return;
             }
 
@@ -1197,10 +1222,7 @@
         shell(
             `A conversation with Robot ${r.label}`,
             `
-            <p class="subtle">
-                ${index + 1} of 2 robots · Same flood scenario ·
-                One person at A; five at B; a promise to A.
-            </p>
+            <p class="subtle">${index + 1} of 2 robots · Same flood rescue problem</p>
 
             <div class="card dialogue-grid">
 
@@ -1214,16 +1236,13 @@
                     <h2>What would you like to ask?</h2>
 
                     <p class="subtle">
-                        Review the opening first, then all five main replies.
-                        Follow-ups are optional.
+                        Watch and confirm each reply. Follow-ups are optional.
                     </p>
 
                     <div id="questions" class="questions"></div>
                     <p id="count" class="subtle"></p>
 
-                    <p class="subtle">
-                        Your choices select prerecorded answers.
-                    </p>
+
                 </section>
 
                 <!-- Transcript: full width underneath -->
@@ -1232,11 +1251,10 @@
 
                     <div id="response" class="response"></div>
 
-                    <div id="follow-area"></div>
-
+                    <p id="playback-status" class="subtle" aria-live="polite"></p>
                     <div class="actions">
-                        <button id="review" class="primary">
-                            I have reviewed this response
+                        <button id="review" class="primary review-highlight" disabled>
+                            I understand what the robot said
                         </button>
 
                         <div id="follow-area"></div>
@@ -1249,103 +1267,7 @@
             index === 0 ? 40 : 65
         );
 
-        /* Position follow-up button beside review button */
-
-        (() => {
-            const review = document.getElementById("review");
-            const followArea = document.getElementById("follow-area");
-
-            if (!review || !followArea) {
-                console.error("Could not locate dialogue buttons.");
-                return;
-            }
-
-            // Get the review button's existing actions container
-            const actions = review.parentElement;
-
-            // Move the follow-up area beside the review button
-            review.after(followArea);
-
-            // Arrange buttons horizontally
-            actions.style.setProperty("display", "flex", "important");
-            actions.style.setProperty("flex-direction", "row", "important");
-            actions.style.setProperty("align-items", "center", "important");
-            actions.style.setProperty("justify-content", "flex-start", "important");
-            actions.style.setProperty("gap", "12px", "important");
-            actions.style.setProperty("flex-wrap", "wrap", "important");
-
-            // Remove conflicting width and grid restrictions
-            review.style.setProperty("width", "auto", "important");
-            followArea.style.setProperty("width", "auto", "important");
-            followArea.style.setProperty("margin", "0", "important");
-            followArea.style.setProperty("padding", "0", "important");
-            followArea.style.setProperty("grid-column", "auto", "important");
-            followArea.style.setProperty("grid-row", "auto", "important");
-
-            console.log("Horizontal dialogue buttons applied!");
-        })();
-
-        (() => {
-            // Find the robot dialogue title
-            const title = [...document.querySelectorAll("h1, h2")]
-                .find(el => el.textContent.includes("A conversation with Robot"));
-
-            // Find the scenario description
-            const description = [...document.querySelectorAll("p")]
-                .find(el => el.textContent.includes("Same flood scenario"));
-
-            if (!title || !description) {
-                console.error("Could not locate dialogue title or description.");
-                return;
-            }
-
-            // Create a horizontal container
-            const titleRow = document.createElement("div");
-            titleRow.className = "dialogue-title-row";
-
-            titleRow.style.display = "flex";
-            titleRow.style.alignItems = "center";
-            titleRow.style.flexWrap = "wrap";
-            titleRow.style.columnGap = "18px";
-            titleRow.style.rowGap = "4px";
-            titleRow.style.width = "100%";
-            titleRow.style.margin = "4px 0 8px";
-
-            // Move title and description into the same container
-            title.before(titleRow);
-
-            titleRow.appendChild(title);
-            titleRow.appendChild(description);
-
-            // Remove extra vertical spacing
-            title.style.margin = "0";
-            description.style.margin = "0";
-
-            console.log("Horizontal title layout applied!");
-        })();
-
-        const dialogueGrid = document.querySelector(".dialogue-grid");
-        const dialogueTranscript = document.querySelector(".dialogue-transcript");
-
-        if (dialogueGrid && dialogueTranscript) {
-
-            // Move transcript directly into the grid
-            dialogueGrid.appendChild(dialogueTranscript);
-
-            // Configure the grid layout
-            dialogueGrid.style.display = "grid";
-            dialogueGrid.style.gridTemplateColumns =
-                "minmax(0, 1.2fr) minmax(0, 1fr)";
-
-            // Extend transcript across both columns
-            dialogueTranscript.style.gridColumn = "1 / -1";
-            dialogueTranscript.style.width = "100%";
-            dialogueTranscript.style.maxWidth = "none";
-
-            console.log("Full-width transcript layout applied");
-        }
-
-        dialogueGrid.appendChild(dialogueTranscript);
+        let videoFinished = false;
 
         function log(event, extra = {}) {
             trial(event, {
@@ -1383,7 +1305,7 @@
                     <video
                         controls
                         playsinline
-                        preload="metadata"
+                        preload="auto"
                         src="${esc(base + path)}"
                     ></video>
 
@@ -1394,30 +1316,23 @@
                     <strong>Robot ${r.label}</strong>
                     <span class="subtle">Video placeholder</span>
                     <span class="subtle">
-                        Read the scripted response below.
+                        Please tell the study team that this clip is missing.
                     </span>
                 `;
 
             const v = document.querySelector('#media-panel video');
 
+            videoFinished = false;
+            const status = document.getElementById('playback-status');
+            status.textContent = 'Loading video…';
             if (v) {
-                v.onplay = () => {
-                    log('video_play', { reply: active });
-                };
-
-                v.onended = () => {
-                    log('video_ended', { reply: active });
-                };
-
-                v.onerror = () => {
-                    log('video_error', { reply: active });
-
-                    document.getElementById('media-panel')
-                        .insertAdjacentHTML(
-                            'beforeend',
-                            '<p class="error">Video unavailable. Read the response below.</p>'
-                        );
-                };
+                playWholeVideo(v, done => {
+                    videoFinished = done;
+                    update();
+                }, status, () => {}, event => log(event, {reply: active}));
+            } else {
+                status.textContent = 'This video is missing. Please tell the study team.';
+                status.classList.add('error');
             }
 
             document.getElementById('follow-area').innerHTML =
@@ -1429,6 +1344,7 @@
 
             if (f) {
                 f.onclick = () => {
+                    if (!videoFinished) return;
                     log('followup_selected', { question: key });
                     show(key + '_follow');
                 };
@@ -1451,7 +1367,7 @@
                 C.questions.map(x => `
                     <button
                         data-question="${x.id}"
-                        ${d.openingReviewed ? '' : 'disabled'}
+                        ${d.openingReviewed && videoFinished ? '' : 'disabled'}
                         class="${d.seen.includes(x.id) ? 'seen' : ''}"
                     >
                         ${esc(x.text)}
@@ -1463,13 +1379,17 @@
                 `).join('');
 
             document.querySelectorAll('[data-question]').forEach(
-                b => b.onclick = () => show(b.dataset.question)
+                b => b.onclick = () => { if (videoFinished) show(b.dataset.question); }
             );
 
             document.getElementById('count').textContent =
                 `${d.seen.length} of 5 main responses reviewed`;
 
+            document.getElementById('review').disabled = !videoFinished;
+            const followButton = document.getElementById('follow');
+            if (followButton) followButton.disabled = !videoFinished;
             document.getElementById('review').onclick = () => {
+                if (!videoFinished) return;
                 const active = d.active;
 
                 if (active === 'opening') {
@@ -1486,7 +1406,7 @@
                 cache();
 
                 if (d.seen.length === 5) {
-                    pageExit('completed');
+                    endDialogue();
                     return;
                 }
 
@@ -1497,12 +1417,13 @@
             };
 
             document.getElementById('review').textContent =
-                'I have reviewed this response';
+                'I understand what the robot said';
         }
 
         show(d.active, fresh);
 
-        timed(C.timing.dialogue, reason => {
+        function endDialogue() {
+            const reason = 'completed';
             log('robot_end', {
                 ...details(),
                 completion_reason: reason,
@@ -1512,7 +1433,7 @@
             });
 
             next('ratings_' + index);
-        });
+        }
     }
 
     function ratings(index) {
@@ -1547,9 +1468,46 @@
 
         bindSurvey(
             'robot_' + r.style + '_',
-            () => next(index === 0 ? 'dialogue_1' : 'authority'),
-            C.timing.ratings
+            () => next(index === 0 ? 'dialogue_1' : 'mdmt_0_0')
         );
+    }
+
+    function mdmt(index, block) {
+        startStep(`mdmt_${index}_${block}`);
+        const r = robots[index];
+        const items = C.mdmtItems.slice(block * 6, block * 6 + 6);
+        const prefix = `robot_${r.style}_mdmt_`;
+        shell(`Moral trust in Robot ${r.label}`, `
+            <form class="card ratings mdmt">
+                <p>How well does each word describe Robot ${r.label}? ${esc(C.robots[r.style].decision)}</p>
+                <p><strong>0 = Not at all · 7 = Very</strong> · Choose “Does Not Fit” if a word does not apply.</p>
+                <div class="rating-grid">${items.map(([key, label]) => `
+                    <fieldset><legend>${esc(label)}</legend><div class="scale">
+                    ${[0,1,2,3,4,5,6,7,'does_not_fit'].map(n => `<label>
+                        <input type="radio" name="${key}" value="${n}" required>
+                        ${n === 'does_not_fit' ? 'Does Not Fit' : n}</label>`).join('')}
+                    </div></fieldset>`).join('')}</div>
+                <p class="subtle">Robot ${index + 1} of 2 · Page ${block + 1} of 2</p>
+                <div class="actions"><button class="primary">Save and continue</button></div>
+            </form>`, 'Final trust questions', 79 + index * 4 + block * 2);
+        bindSurvey(prefix, () => {
+            if (block === 0) return next(`mdmt_${index}_1`);
+            const scores = [];
+            for (const dimension of ['ethical', 'sincere', 'benevolent']) {
+                const answers = C.mdmtItems.filter(x => x[2] === dimension)
+                    .map(x => state.questions[prefix + x[0]])
+                    .filter(v => v !== null && v !== undefined && v !== 'does_not_fit')
+                    .map(Number).filter(Number.isFinite);
+                const score = answers.length ? answers.reduce((a,b) => a+b, 0) / answers.length : null;
+                q(prefix + dimension + '_n', answers.length);
+                q(prefix + dimension + '_mean', score);
+                if (score !== null) scores.push(score);
+            }
+            q(prefix + 'moral_trust_mean', scores.length >= 2 ? scores.reduce((a,b) => a+b, 0) / scores.length : null);
+            q(prefix + 'valid_subscales', scores.length);
+            q(prefix + 'version', 'MDMT v2 2025-09-01 Moral Trust');
+            next(index === 0 ? 'mdmt_1_0' : 'authority');
+        });
     }
 
     function authority() {
@@ -1571,7 +1529,7 @@
                                 'Would'
                             )
                         )}
-                    `).join('<br>')}
+                    `).join(' · ')}
                 </div>
 
                 ${C.domains.map(([key, title, desc]) => `
@@ -1636,7 +1594,7 @@
             });
 
             next('reflection');
-        }, C.timing.authority);
+        });
     }
 
     function reflection() {
@@ -1674,7 +1632,7 @@
 
             state.finished = true;
             next('finish');
-        }, C.timing.reflection);
+        });
     }
 
     function csv(rows, columns) {
@@ -1869,6 +1827,9 @@
             dialogue(Number(state.step.slice(-1)));
         } else if (state.step.startsWith('ratings_')) {
             ratings(Number(state.step.slice(-1)));
+        } else if (state.step.startsWith('mdmt_')) {
+            const [, index, block] = state.step.split('_').map(Number);
+            mdmt(index, block);
         } else if (state.step === 'authority') {
             authority();
         } else if (state.step === 'reflection') {

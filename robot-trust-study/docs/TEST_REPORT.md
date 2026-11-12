@@ -1,5 +1,29 @@
 # Test report
 
+## Presentation update 1.3.0 — November 12, 2026
+
+The current browser suite passed all four order/label combinations, consent copy and researcher contacts, the red underage message, required-form gating, instruction comprehension feedback, full-video navigation locks, and untimed dialogue and questionnaires. Thirty minutes of simulated time did not advance the conversation or MDMT pages. Tests confirmed that the old trust items are absent, that numeric MDMT responses produce the expected means, that Does Not Fit is excluded, that a zero is retained as a valid score, and that fewer than two valid dimensions produces a null moral-trust score.
+
+All checked participant screens fit at 1366×768 CSS pixels with 100% zoom. The mobile dialogue had no horizontal overflow at 390 pixels. A real included WebM clip played through and unlocked confirmation at its end; most full-flow checks simulated media state for speed. The instruction screenshot was refreshed with a neutral example response and the highlighted button. No robot video or recorded script was changed.
+
+The native adapter mock passed server-assigned order, MDMT saving, failed-final-save retry, and the completion gate. The separate psiTurk 3.3.1/SQLite integration test passed installation, refusal to overwrite, media hashes, consent and experiment rendering, four randomized assignments, sync persistence, completion, CSV ID linkage, and database backup.
+
+Remaining machine-specific checks: complete a Firefox pilot on the Ubuntu VM, confirm sound through the actual audio device, play all clips, and verify the saved CSVs. Browser autoplay restrictions can require pressing Play. Layout checks do not guarantee no scrolling at every resolution or zoom level. The new untimed flow no longer has a fixed 10–12 minute duration; confirm the estimate with a pilot.
+
+The older reports below describe previous versions.
+
+## Experiment copy 1.2.0 — November 10, 2026
+
+The separate experiment copy was checked against psiTurk 3.3.1 using Python 3.10 and a temporary SQLite database. The native integration test passed fresh installation, refusal to overwrite an existing folder, byte-for-byte media copying, consent and experiment template rendering, assignment of all four combinations across four fresh sessions, saving and loading through `/sync`, session completion, native CSV export with matching participant IDs, and SQLite backup. This used Flask's test client, not a deployed public server.
+
+The browser suite also passed all four complete paths, timeouts and partial responses, age validation, and mocked psiTurk save/retry/completion checks with Chromium 134. No study dialogue, videos, or rating items were changed in this copy.
+
+Run `python tests/native-check.py` in a working psiTurk environment to repeat the native test. It creates its own temporary project and never uses the collection database. The test environment used cryptography 38.0.4 and setuptools 80.10.2 for compatibility with psiTurk 3.3.1's older dependencies; the user's existing working environment should be reused.
+
+**Still required on the Ubuntu VM:** a complete Firefox pilot covering audible sound, full video playback, page layout, timing, the saved confirmation, and an export. The automated browser media check simulates the video's ended event. These tests do not certify audio playback or the 10–12 minute duration on the VM.
+
+The following report records earlier presentation checks; it is historical, not a new layout certification.
+
 ## Version 1.1.0 — November 3, 2026
 
 Browser checks used Playwright with Chromium 134 in headless mode. Tests loaded repository files through request routing. The results below cover the presentation revisions, including the existing robot videos.
@@ -35,7 +59,7 @@ Set `STUDY_BROWSER` to an installed Chromium executable if needed. No HTTP serve
 
 The main test output is in `browser-test-results.txt`.
 
-## Remaining VM checks
+## Remaining VM checks at version 1.1.0
 
 The browser tests use a mocked psiTurk connection. They do not verify the live server, its assignment service, database persistence, or exported CSV files.
 

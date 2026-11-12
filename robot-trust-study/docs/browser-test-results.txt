@@ -1,8 +1,7 @@
-PASS complete path 0/0: order, labels, both questionnaires, authority mapping, CSV ID linkage
-PASS complete path 0/1: order, labels, both questionnaires, authority mapping, CSV ID linkage
-PASS complete path 1/0: order, labels, both questionnaires, authority mapping, CSV ID linkage
-PASS complete path 1/1: order, labels, both questionnaires, authority mapping, CSV ID linkage
-PASS all page timeouts, partial ratings/text, null missing values
-PASS consent decline, age boundaries, responsive width
-PASS mocked psiTurk routing, server assignment, reload deadline, failed-save retry and completion gate
-PASS no uncaught JavaScript errors
+PASS 0/0: video gates, untimed dialogue/questionnaires, MDMT scoring and IDs
+PASS 0/1: video gates, untimed dialogue/questionnaires, MDMT scoring and IDs
+PASS 1/0: video gates, untimed dialogue/questionnaires, MDMT scoring and IDs
+PASS 1/1: video gates, untimed dialogue/questionnaires, MDMT scoring and IDs
+PASS native adapter mock: server assignment, final-save failure/retry, MDMT persistence
+PASS real WebM autoplay/end unlock and mobile width
+PASS desktop layout at 1366x768, underage warning, comprehension checks, no JS errors

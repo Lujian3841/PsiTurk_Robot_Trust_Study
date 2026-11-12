@@ -1,3 +1,7 @@
+# Version 1.3 additions
+
+MDMT raw items, dimension means, valid counts, and moral-trust means are stored in questiondata.csv. See [MDMT.md](MDMT.md). The earlier trust_1/trust_2 items are no longer collected. Robot dialogue and questionnaires are untimed; only the scenario can end by timeout. The rest of this document describes the common record format and earlier fields.
+
 # Data dictionary
 
 ## Participant linkage and file formats
