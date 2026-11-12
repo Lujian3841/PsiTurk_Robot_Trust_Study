@@ -1,5 +1,17 @@
 # Test report
 
+## Presentation update 1.3.0 — November 12, 2026
+
+The current browser suite passed all four order/label combinations, consent copy and researcher contacts, the red underage message, required-form gating, instruction comprehension feedback, full-video navigation locks, and untimed dialogue and questionnaires. Thirty minutes of simulated time did not advance the conversation or MDMT pages. Tests confirmed that the old trust items are absent, that numeric MDMT responses produce the expected means, that Does Not Fit is excluded, that a zero is retained as a valid score, and that fewer than two valid dimensions produces a null moral-trust score.
+
+All checked participant screens fit at 1366×768 CSS pixels with 100% zoom. The mobile dialogue had no horizontal overflow at 390 pixels. A real included WebM clip played through and unlocked confirmation at its end; most full-flow checks simulated media state for speed. The instruction screenshot was refreshed with a neutral example response and the highlighted button. No robot video or recorded script was changed.
+
+The native adapter mock passed server-assigned order, MDMT saving, failed-final-save retry, and the completion gate. The separate psiTurk 3.3.1/SQLite integration test passed installation, refusal to overwrite, media hashes, consent and experiment rendering, four randomized assignments, sync persistence, completion, CSV ID linkage, and database backup.
+
+Remaining machine-specific checks: complete a Firefox pilot on the Ubuntu VM, confirm sound through the actual audio device, play all clips, and verify the saved CSVs. Browser autoplay restrictions can require pressing Play. Layout checks do not guarantee no scrolling at every resolution or zoom level. The new untimed flow no longer has a fixed 10–12 minute duration; confirm the estimate with a pilot.
+
+The older reports below describe previous versions.
+
 ## Experiment copy 1.2.0 — November 10, 2026
 
 The separate experiment copy was checked against psiTurk 3.3.1 using Python 3.10 and a temporary SQLite database. The native integration test passed fresh installation, refusal to overwrite an existing folder, byte-for-byte media copying, consent and experiment template rendering, assignment of all four combinations across four fresh sessions, saving and loading through `/sync`, session completion, native CSV export with matching participant IDs, and SQLite backup. This used Flask's test client, not a deployed public server.

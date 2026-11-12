@@ -1,3 +1,29 @@
+# Presentation update — version 1.3.0
+
+The November 12 update uses larger full-width text, contact emails, a red underage warning, highlighted response confirmation, required full video playback, untimed dialogue/questionnaires, and MDMT moral trust. Order remains randomly balanced by psiTurk. The story page alone has a 60-second countdown.
+
+To keep earlier responses separate, install the update in a new VM folder:
+
+```bash
+source ~/psiturk-work/.venv/bin/activate
+cd ~/Downloads/robot-study-experiment-source
+git pull --ff-only origin psiturk-experiment
+python robot-trust-study/setup_experiment.py ~/robot-study-project/Robot_Study_Presentation --port 22366
+cd ~/robot-study-project/Robot_Study_Presentation
+psiturk server on
+psiturk debug -p
+```
+
+If you do not have that source folder, clone the psiturk-experiment branch as shown below first. If Git reports local changes, keep those files and inspect the differences before pulling; do not discard your work. The new folder has its own database. Keep Robot_Study_Experiment and its existing records intact.
+
+Use the same new folder when running `python export_results.py`. Start a fresh session URL after installing an update; never reuse an old-version participant URL. This revised measure should not be pooled with the earlier generic trust ratings.
+
+For a separate pilot of this update, use another new folder and port, such as Robot_Study_Presentation_Pilot and 22367. The source includes all videos, so no clips need to be recreated. If you have additional VM-only edits, compare them with this source before changing your installed project.
+
+See [CODE_WALKTHROUGH.md](CODE_WALKTHROUGH.md) to prepare for the professor's code review.
+
+---
+
 # Running the robot trust study
 
 Julian Arceo & Zachary Alexander · Purdue Northwest
@@ -58,7 +84,7 @@ python export_results.py
 
 Each export creates a new dated folder under `exports/` containing:
 
-- `trialdata.csv`: timed experimental events.
+- `trialdata.csv`: experimental events and response times.
 - `questiondata.csv`: consent, demographics, checks, ratings, authority choices, and reflection.
 - `eventdata.csv`: psiTurk platform events.
 - `participants.db`: a consistent backup of the SQLite database.

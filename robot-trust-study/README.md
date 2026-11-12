@@ -7,6 +7,8 @@ Our study asks how a robot's moral decisions affect trust. Participants meet two
 
 Everyone meets both robots. Participants choose questions to learn each robot's reasons, rate both robots, and decide which they would trust with decisions about business, family, government, and rescue operations.
 
+For the professor walkthrough, see [CODE_WALKTHROUGH.md](docs/CODE_WALKTHROUGH.md). Current measures and scoring are in [MDMT.md](docs/MDMT.md).
+
 ## Running the study
 
 For a fresh installation, follow [RUN_EXPERIMENT.md](docs/RUN_EXPERIMENT.md). After installation, start the study in the Ubuntu VM:
@@ -49,7 +51,7 @@ The study uses two order conditions and two label assignments. The psiTurk confi
 [Task Parameters]
 num_conds = 2
 num_counters = 2
-experiment_code_version = robot-trust-1.1.0
+experiment_code_version = robot-trust-experiment-1.3.0
 ```
 
 Participants see neutral labels, Robot A and Robot B. The order and labels can repeat across sessions. The four preview combinations can be opened by adding `?condition=0&counterbalance=0`, `?condition=0&counterbalance=1`, `?condition=1&counterbalance=0`, or `?condition=1&counterbalance=1` to the preview URL. These links check the interface; live assignment comes from psiTurk.
@@ -58,19 +60,13 @@ The 22 robot clips are already linked in `content.js`. The study uses the `-fina
 
 ## Participant flow
 
-Consent → background questions → sound/video check → instructions → understanding check → rescue scenario → first robot and ratings → second robot and ratings → authority choices → final comment → closing explanation.
+Consent → background questions → sound/video check → instructions → understanding check → rescue scenario → first robot and ratings → second robot and ratings → MDMT moral trust for both robots → authority choices → final comment → closing explanation.
 
 Participants must be 18 or older. Required forms keep Continue disabled until answers are complete. Setup pages have Previous buttons and retain answers. The instruction check requires correct answers before the timed task starts.
 
-| Timed page | Limit |
-|---|---:|
-| Rescue scenario | 60 seconds |
-| Each robot conversation | 150 seconds |
-| Each robot's ratings | 60 seconds |
-| Authority choices | 60 seconds |
-| Final comment | 45 seconds |
+Only the rescue story has a 60-second timer. Robot dialogue, ratings, moral-trust questions, authority choices, and final comments are untimed. Each selected clip must finish before the participant can continue. Videos request autoplay with sound; if the browser blocks this, the participant presses Play. The red underage message appears for ages below 18.
 
-The timed limits total 9 minutes 45 seconds. Our overall target is 10–12 minutes including setup; actual completion time needs a timed pilot. Participants can finish pages early. If time runs out, the page saves the current answers and moves on. Consent and setup checks are untimed.
+Allow 15–20 minutes and verify the duration with a pilot. Optional follow-ups and untimed responses can extend it. The two generic trust questions from earlier versions are replaced by the 12-item MDMT v2 Moral Trust subset for each robot at the end. Comfort, competence, and intelligence remain separate ratings.
 
 ## Data
 
