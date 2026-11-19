@@ -29,67 +29,6 @@ All study files are under `robot-trust-study/`:
 
 The root `index.html` loads the same study for GitHub Pages. There is no build step.
 
-## Update the VM without losing demo data
-
-Finish or close any active session first. In the Ubuntu terminal:
-
-```bash
-source ~/psiturk-work/.venv/bin/activate
-cd ~/robot-study-project/Robot_Study_Presentation
-psiturk server off
-python export_results.py
-cp -a "$HOME/robot-study-project/Robot_Study_Presentation" "$HOME/robot-study-project/Robot_Study_Presentation-backup-$(date +%Y%m%d-%H%M%S)"
-
-cd ~/Downloads/robot-study-experiment-source
-git switch psiturk-experiment
-git pull --ff-only origin psiturk-experiment
-python robot-trust-study/install_into_psiturk.py ~/robot-study-project/Robot_Study_Presentation
-
-cd ~/robot-study-project/Robot_Study_Presentation
-psiturk server on
-psiturk debug -p
-```
-
-If an export, backup, or Git command fails, stop and resolve it before installing. The installer copies program files and keeps the configured database path, port, and existing participant records. It does not delete old files from the installed project. The repository cleanup therefore does not delete the VM's results or local backups. Keep the backup outside the submission folder.
-
-Open the complete new URL in Firefox inside the VM. Generate a new URL with `psiturk debug -p` for each participant. Do not reuse a previous participant's link. Use Ctrl+Shift+R if the browser displays an older interface.
-
-The cleanup preserves the version 1.3.0 questions, field names, scoring, condition mapping, and data formats. Earlier records retain the version saved when they were collected. Do not rewrite old responses or combine older generic trust ratings with MDMT scores as though they were the same measure.
-
-## First installation
-
-If you do not already have the source folder:
-
-```bash
-source ~/psiturk-work/.venv/bin/activate
-cd ~/Downloads
-git clone --branch psiturk-experiment --single-branch https://github.com/Lujian3841/PsiTurk_Robot_Trust_Study.git robot-study-experiment-source
-```
-
-Create a new installation only if the destination does not exist:
-
-```bash
-python ~/Downloads/robot-study-experiment-source/robot-trust-study/setup_experiment.py ~/robot-study-project/Robot_Study_Presentation --port 22366
-cd ~/robot-study-project/Robot_Study_Presentation
-psiturk server on
-psiturk debug -p
-```
-
-This creates an independent database. Do not use fresh setup to replace an existing collection folder. The installed database path is absolute, so do not rename the installed project afterward.
-
-## Export results
-
-From the installed project folder, run `python export_results.py`. Each run creates a dated folder under `exports/` containing:
-
-- `trialdata.csv`: dialogue choices, video events, order, and timing.
-- `questiondata.csv`: consent, demographics, checks, ratings, MDMT answers and scores, authority choices, and reflection.
-- `eventdata.csv`: psiTurk events.
-- `participants.db`: a consistent SQLite backup.
-
-Native psiTurk CSVs have no header row. Question columns are participant ID, question name, and answer. Trial columns are participant ID, trial number, timestamp, and JSON event content. Both use the same participant ID. Exports include completed and partial sessions; the `completed` question identifies finished responses. Preview CSVs have headers and a different layout.
-
-Submit the source files, live preview link, and the original CSV exports privately to the professor. Keep participant data out of the public repository. Exporting again does not remove older records or exports.
-
 ## Procedure and scoring
 
 This is a within-subject study. Both robots use the same scenario and question menu. psiTurk uses two order conditions and two label assignments, chosen through balanced random assignment. Consecutive sessions may have the same order. The preview randomizes locally; explicit `condition` and `counterbalance` URL parameters are available for checking all four combinations.
