@@ -61,7 +61,7 @@ def main():
     with (target / "config.txt").open("w") as handle:
         config.write(handle)
     shutil.copy2(source / "export_results.py", target / "export_results.py")
-    shutil.copy2(source / "docs" / "RUN_EXPERIMENT.md", target / "RUN_EXPERIMENT.md")
+    shutil.copy2(source.parent / "README.md", target / "README.md")
     print("\nExperiment installed at:", target)
     print("Database:", target / "participants.db")
     print("Port:", args.port)

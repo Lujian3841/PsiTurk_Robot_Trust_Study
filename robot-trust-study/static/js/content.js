@@ -46,7 +46,7 @@ window.STUDY = {
     care: {opening:'care-opening-final.webm', reason:'care-reason-final.webm', reason_follow:'care-reason_follow-final.webm', left_behind:'care-left_behind-final.webm', left_behind_follow:'care-left_behind_follow-final.webm',
       promise:'care-promise-final.webm', promise_follow:'care-promise_follow-final.webm', suffering:'care-suffering-final.webm', suffering_follow:'care-suffering_follow-final.webm', change:'care-change-final.webm', change_follow:'care-change_follow-final.webm'}
   },
-  // MDMT v2 (2025-09-01), Moral Trust subset; see docs/MDMT.md.
+  // MDMT v2 (2025-09-01), Moral Trust subset; see the root README.
   mdmtItems: [
     ['ethical', 'ethical', 'ethical'], ['truthful', 'truthful', 'sincere'],
     ['benevolent', 'benevolent', 'benevolent'], ['principled', 'principled', 'ethical'],

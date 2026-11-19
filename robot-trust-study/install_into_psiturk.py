@@ -28,7 +28,7 @@ if "ROBOT_STUDY_ENV" not in text:
     )
     if n != 1:
         p.error(
-            "Could not identify exactly one sample task.js script. No files changed. Use the manual installation in README.md."
+            "Could not identify exactly one sample task.js script. No files changed. Start with a fresh psiTurk example."
         )
     if "</body>" not in text.lower() and "{% block body %}" not in text:
         p.error("No body or Jinja body block found. No files changed.")
@@ -62,6 +62,11 @@ if "ROBOT_STUDY_ENV" not in text:
     if not exp.with_suffix(".html.original").exists():
         shutil.copy2(exp, exp.with_suffix(".html.original"))
     exp.write_text(text)
+# Older installed copies already have the study scripts; add the shared helpers once.
+if '/static/js/helpers.js' not in text:
+    text = text.replace('<script src="/static/js/study.js"></script>',
+                        '<script src="/static/js/helpers.js"></script>\n<script src="/static/js/study.js"></script>')
+exp.write_text(text)
 for group in ["js", "css", "media"]:
     dst = target / "static" / group
     dst.mkdir(parents=True, exist_ok=True)
@@ -92,3 +97,6 @@ print("Study introduction templates installed. Run psiTurk server on and debug."
 print(
     "Existing video paths are in static/js/content.js. Review the classroom contact wording."
 )
+
+shutil.copy2(source / "export_results.py", target / "export_results.py")
+shutil.copy2(source.parent / "README.md", target / "README.md")
